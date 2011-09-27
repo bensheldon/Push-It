@@ -235,6 +235,11 @@ extend(PushIt.prototype, {
         if(err){ 
           console.log("Error getting agent "+ agentId + " on disconnect.");
         }else{
+          // unsubscribe from channels
+          for(var channelName in agent.subscriptions){
+            channel = agent.subscriptions[channelName];
+            self.subscriptionManager.unsubscribe(channel, agent);
+          }
           Agent.remove(agentId);
           self.onDisconnect(agent);
         }
