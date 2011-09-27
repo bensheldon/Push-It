@@ -11,6 +11,8 @@ function Agent(obj){
     agents[obj.id] = this; // auto-save. TODO: garbage collect
     this.credentials = obj.credentials;
     this.isConnected = obj.isConnected;
+    
+    this.subscriptions = {}; // list of subscriptions
 
     if(obj.client){
       this.client = obj.client;
@@ -67,6 +69,7 @@ agent.prototype.requireConnection = function(timeout){
 agent.prototype.subscribe = function(channel){
   this.subscriptionResponse(channel, true);
   channel.subscribe(this);
+  this.subscriptions[channel.name] = channel;
 };
 
 agent.prototype.subscriptionDenied = function(channel, reason){
